@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-datatable-api/paper-datatable-api.html">
+<link rel="import" href="../../bower_components/paper-datatable-api/paper-datatable-api-column.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+
+<dom-module id="repo-list">
+    <template>
+        <div class="layout horizontal center-justified">
+            <div>
+                <iron-ajax auto verbose last-response="{{data}}" loading="{{loading}}"
+                           url="//api.github.com/users/[[user]]/repos" handle-as="json"
+                           headers='{"Accept": "application/vnd.github.v3.full+json"}'></iron-ajax>
+
+                <paper-card heading="[[user]]'s repositories">
+                    <paper-spinner alt="Loading repositories..." active="[[loading]]"
+                                   style="position: absolute; left: 0.5em;"></paper-spinner>
+                    <div class="card-content">
+                        <!--template is="dom-if" if="[[sortProperty]]">
+                            <span>Sorted by <b>[[sortProperty]]</b> <i>[[sortDirection]]</i></span>
+                        </template-->
+                        <paper-datatable-api data="[[visibleData]]"
+                                             on-sort="_handleSort" on-filter="_handleFilter">
+                            <paper-datatable-api-column header="Created" property="created_at"
+                                                        draggable-column hideable sortable>
+                                <template>
+                                    <pre>[[value]]</pre>
+                                </template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Last modified" property="updated_at"
+                                                        draggable-column hideable sortable>
+                                <template>
+                                    <pre>[[value]]</pre>
+                                </template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Name" property="name"
+                                                        draggable-column filter>
+                                <template>
+                                    <b>[[value]]</b>
+                                </template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Description" property="description"
+                                                        draggable-column hideable filter>
+                                <template>
+                                    <i>[[value]]</i>
+                                </template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="Browse on GitHub" property="html_url"
+                                                        draggable-column>
+                                <template>
+                                    <a href$="[[value]]">
+                                        <paper-button>
+                                            <iron-icon src="../../static/images/GitHub-Mark-32px.png">
+                                            </iron-icon>
+                                            Browse
+                                        </paper-button>
+                                    </a>
+                                </template>
+                            </paper-datatable-api-column>
+                            <paper-datatable-api-column header="GitHub Pages" property="possibleGhPages"
+                                                        draggable-column hideable>
+                                <template>
+                                    <template is="dom-repeat" items="[[value]]">
+                                        <dom-bind item="[[item]]">
+                                            <template>
+                                                <iron-ajax auto last-response="{{response}}"
+                                                           url="//cors-anywhere.herokuapp.com/[[item]]"
+                                                           handle-as="blob"></iron-ajax>
+                                                <template is="dom-if" if="[[response]]">
+                                                    <a href$="[[item]]">
+                                                        <paper-button>
+                                                            <iron-icon icon="av:web"></iron-icon>
+                                                            Open
+                                                        </paper-button>
+                                                    </a>
+                                                </template>
+                                            </template>
+                                        </dom-bind>
+                                    </template>
+                                </template>
+                            </paper-datatable-api-column>
+                        </paper-datatable-api>
+                    </div>
+                </paper-card>
+            </div>
+        </div>
+    </template>
+    <script src="repo-list.js"></script>
+</dom-module>
