@@ -38,17 +38,17 @@ jobs:
             git config --global user.name "CircleCI"
             git init
             git remote add --fetch origin "`git --git-dir=../../.git config remote.origin.url`"
-            if git rev-parse --verify origin/gh-pages > /dev/null 2>&1; then
-              git symbolic-ref HEAD refs/heads/gh-pages
+            if git rev-parse --verify origin/master > /dev/null 2>&1; then
+              git symbolic-ref HEAD refs/heads/master
               git reset
             else
-              echo "Creating orphan branch gh-pages..."
-              git checkout --orphan gh-pages
+              echo "Creating orphan branch master..."
+              git checkout --orphan master
             fi
       - deploy:
-          name: Deploy to gh-pages
+          name: Deploy to master
           working_directory: "build/default"
           command: |
             git add -A
             git commit --allow-empty -m "Automated CI deployment [$CIRCLE_BRANCH: $CIRCLE_SHA1]"
-            git push --force origin gh-pages
+            git push --force origin master
