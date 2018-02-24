@@ -1,0 +1,15 @@
+{
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "extraDependencies": [
+    "static/**/*"
+  ],
+  "builds": [{
+    "js": {"minify": true, "compile": true},
+    "css": {"minify": true},
+    "html": {"minify": true}
+  }]
+}

@@ -11,10 +11,8 @@
 
 <repo-list user="lezsakdomi"></repo-list>
 
-<script id="__bs_script__">
-    if (location.port===3000) {
-        document.write('<script async src="//'+location.hostname+':'+location.port+'/browser-sync/browser-sync-client.js?v=2.23.6"><'+'/script>');
-    }
-</script>
+<script>if(location.port===3000)document.write('<TAG async src="//HOST:PORT/br'+
+'owser-sync/browser-sync-client.js?v=2.23.6"></TAG>'.replace('HOST',location.
+hostname).replace('PORT',location.port).replace('TAG','script'));</script>
 </body>
 </html>
