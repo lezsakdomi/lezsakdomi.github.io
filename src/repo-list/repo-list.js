@@ -42,8 +42,8 @@ class RepoList extends Polymer.Element {
 
             data.forEach(repo => {
                 let domain = repo.owner.login+".github.io";
-                let ownerPage = "https://"+domain;
-                repo.possibleGhPages = [ownerPage+"/"+repo.name];
+                let ownerPage = "https://"+domain+"/";
+                repo.possibleGhPages = [ownerPage+repo.name+"/"];
                 if (repo.name == domain) {
                     repo.possibleGhPages.unshift(ownerPage);
                 }
