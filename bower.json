@@ -1,0 +1,12 @@
+{
+  "name": "lezsakdomi.github.io",
+  "homepage": "https://github.com/lezsakdomi/lezsakdomi.github.io",
+  "authors": [
+    "Domonkos Lezsák <lezsakdomi1@gmail.com>"
+  ],
+  "description": "Personal GitHub Page",
+  "private": true,
+  "dependencies": {
+    "pdfjs-dist": "^1.7.310"
+  }
+}
