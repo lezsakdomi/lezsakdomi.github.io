@@ -5,7 +5,8 @@
     ]
   },
   "extraDependencies": [
-    "static/**/*"
+    "static/**/*",
+    "bower_components/pdfjs-dist/build/pdf.worker.min.js"
   ],
   "builds": [{
     "js": {"minify": true, "compile": true},
