@@ -9,7 +9,7 @@
     "bower_components/pdfjs-dist/build/pdf.worker.min.js"
   ],
   "builds": [{
-    "js": {"minify": true, "compile": true},
+    "js": {"minify": true, "compile": {"exclude": ["**/*.min.js"]}},
     "css": {"minify": true},
     "html": {"minify": true}
   }]
