@@ -11,10 +11,6 @@
   "builds": [{
     "js": {"minify": true, "compile": {"exclude": ["**/*.min.js"]}},
     "css": {"minify": true},
-    "html": {"minify": true},
-    "bundle": true,
-    "addServiceWorker": true,
-    "addPushManifest": true,
-    "insertPrefetchLinks": true
+    "html": {"minify": true}
   }]
 }
