@@ -1,0 +1,27 @@
+<html><head><link rel="import" href="boot.html"><script>(function(){'use strict';/**
+   * Provides basic tracking of element definitions (registrations) and
+   * instance counts.
+   *
+   * @namespace
+   * @summary Provides basic tracking of element definitions (registrations) and
+   * instance counts.
+   */Polymer.telemetry={/**
+     * Total number of Polymer element instances created.
+     * @type {number}
+     */instanceCount:0,/**
+     * Array of Polymer element classes that have been finalized.
+     * @type {Array<Polymer.Element>}
+     */registrations:[],/**
+     * @param {!PolymerElementConstructor} prototype Element prototype to log
+     * @this {this}
+     * @private
+     */_regLog:function _regLog(prototype){console.log("["+prototype.is+"]: registered")},/**
+     * Registers a class prototype for telemetry purposes.
+     * @param {HTMLElement} prototype Element prototype to register
+     * @this {this}
+     * @protected
+     */register:function register(prototype){this.registrations.push(prototype);Polymer.log&&this._regLog(prototype)},/**
+     * Logs all elements registered with an `is` to the console.
+     * @public
+     * @this {this}
+     */dumpRegistrations:function dumpRegistrations(){this.registrations.forEach(this._regLog)}}})();</script></head><body></body></html>

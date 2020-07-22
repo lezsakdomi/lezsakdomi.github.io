@@ -1,0 +1,101 @@
+<html><head><link rel="import" href="../polymer/polymer.html"><link rel="import" href="../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html"><link rel="import" href="../iron-behaviors/iron-button-state.html"><link rel="import" href="../iron-behaviors/iron-control-state.html"><link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html"><link rel="import" href="../iron-icon/iron-icon.html"><link rel="import" href="../iron-validatable-behavior/iron-validatable-behavior.html"><link rel="import" href="../paper-input/paper-input.html"><link rel="import" href="../paper-menu-button/paper-menu-button.html"><link rel="import" href="../paper-ripple/paper-ripple.html"><link rel="import" href="../paper-styles/default-theme.html"><link rel="import" href="paper-dropdown-menu-icons.html"><link rel="import" href="paper-dropdown-menu-shared-styles.html"></head><body><dom-module id="paper-dropdown-menu"><template><style include="paper-dropdown-menu-shared-styles"></style><span role="button"></span><paper-menu-button id="menuButton" vertical-align="[[verticalAlign]]" horizontal-align="[[horizontalAlign]]" dynamic-align="[[dynamicAlign]]" vertical-offset="[[_computeMenuVerticalOffset(noLabelFloat, verticalOffset)]]" disabled="[[disabled]]" no-animations="[[noAnimations]]" on-iron-select="_onIronSelect" on-iron-deselect="_onIronDeselect" opened="{{opened}}" close-on-activate="" allow-outside-scroll="[[allowOutsideScroll]]" restore-focus-on-close="[[restoreFocusOnClose]]"><div class="dropdown-trigger" slot="dropdown-trigger"><paper-ripple></paper-ripple><paper-input type="text" invalid="[[invalid]]" readonly="" disabled="[[disabled]]" value="[[value]]" placeholder="[[placeholder]]" error-message="[[errorMessage]]" always-float-label="[[alwaysFloatLabel]]" no-label-float="[[noLabelFloat]]" label="[[label]]"><iron-icon icon="paper-dropdown-menu:arrow-drop-down" suffix="" slot="suffix"></iron-icon></paper-input></div><slot id="content" name="dropdown-content" slot="dropdown-content"></slot></paper-menu-button></template><script>(function(){'use strict';Polymer({is:"paper-dropdown-menu",behaviors:[Polymer.IronButtonState,Polymer.IronControlState,Polymer.IronFormElementBehavior,Polymer.IronValidatableBehavior],properties:{/**
+           * The derived "label" of the currently selected item. This value
+           * is the `label` property on the selected item if set, or else the
+           * trimmed text content of the selected item.
+           */selectedItemLabel:{type:String,notify:!0,readOnly:!0},/**
+           * The last selected item. An item is selected if the dropdown menu has
+           * a child with slot `dropdown-content`, and that child triggers an
+           * `iron-select` event with the selected `item` in the `detail`.
+           *
+           * @type {?Object}
+           */selectedItem:{type:Object,notify:!0,readOnly:!0},/**
+           * The value for this element that will be used when submitting in
+           * a form. It reflects the value of `selectedItemLabel`. If set directly,
+           * it will not update the `selectedItemLabel` value.
+           */value:{type:String,notify:!0},/**
+           * The label for the dropdown.
+           */label:{type:String},/**
+           * The placeholder for the dropdown.
+           */placeholder:{type:String},/**
+           * The error message to display when invalid.
+           */errorMessage:{type:String},/**
+           * True if the dropdown is open. Otherwise, false.
+           */opened:{type:Boolean,notify:!0,value:!1,observer:"_openedChanged"},/**
+           * By default, the dropdown will constrain scrolling on the page
+           * to itself when opened.
+           * Set to true in order to prevent scroll from being constrained
+           * to the dropdown when it opens.
+           */allowOutsideScroll:{type:Boolean,value:!1},/**
+           * Set to true to disable the floating label. Bind this to the
+           * `<paper-input-container>`'s `noLabelFloat` property.
+           */noLabelFloat:{type:Boolean,value:!1,reflectToAttribute:!0},/**
+           * Set to true to always float the label. Bind this to the
+           * `<paper-input-container>`'s `alwaysFloatLabel` property.
+           */alwaysFloatLabel:{type:Boolean,value:!1},/**
+           * Set to true to disable animations when opening and closing the
+           * dropdown.
+           */noAnimations:{type:Boolean,value:!1},/**
+           * The orientation against which to align the menu dropdown
+           * horizontally relative to the dropdown trigger.
+           */horizontalAlign:{type:String,value:"right"},/**
+           * The orientation against which to align the menu dropdown
+           * vertically relative to the dropdown trigger.
+           */verticalAlign:{type:String,value:"top"},/**
+           * Overrides the vertical offset computed in
+           * _computeMenuVerticalOffset.
+           */verticalOffset:Number,/**
+           * If true, the `horizontalAlign` and `verticalAlign` properties will
+           * be considered preferences instead of strict requirements when
+           * positioning the dropdown and may be changed if doing so reduces
+           * the area of the dropdown falling outside of `fitInto`.
+           */dynamicAlign:{type:Boolean},/**
+           * Whether focus should be restored to the dropdown when the menu closes.
+           */restoreFocusOnClose:{type:Boolean,value:!0}},listeners:{tap:"_onTap"},/**
+         * @type {!Object}
+         */keyBindings:{"up down":"open",esc:"close"},hostAttributes:{role:"combobox","aria-autocomplete":"none","aria-haspopup":"true"},observers:["_selectedItemChanged(selectedItem)"],attached:function attached(){// NOTE(cdata): Due to timing, a preselected value in a `IronSelectable`
+// child will cause an `iron-select` event to fire while the element is
+// still in a `DocumentFragment`. This has the effect of causing
+// handlers not to fire. So, we double check this value on attached:
+var contentElement=this.contentElement;if(contentElement&&contentElement.selectedItem){this._setSelectedItem(contentElement.selectedItem)}},/**
+         * The content element that is contained by the dropdown menu, if any.
+         */get contentElement(){// Polymer 2.x returns slot.assignedNodes which can contain text nodes.
+for(var nodes=Polymer.dom(this.$.content).getDistributedNodes(),i=0,l=nodes.length;i<l;i++){if(nodes[i].nodeType===Node.ELEMENT_NODE){return nodes[i]}}},/**
+         * Show the dropdown content.
+         */open:function open(){this.$.menuButton.open()},/**
+         * Hide the dropdown content.
+         */close:function close(){this.$.menuButton.close()},/**
+         * A handler that is called when `iron-select` is fired.
+         *
+         * @param {CustomEvent} event An `iron-select` event.
+         */_onIronSelect:function _onIronSelect(event){this._setSelectedItem(event.detail.item)},/**
+         * A handler that is called when `iron-deselect` is fired.
+         *
+         * @param {CustomEvent} event An `iron-deselect` event.
+         */_onIronDeselect:function _onIronDeselect(event){this._setSelectedItem(null)},/**
+         * A handler that is called when the dropdown is tapped.
+         *
+         * @param {CustomEvent} event A tap event.
+         */_onTap:function _onTap(event){if(Polymer.Gestures.findOriginalTarget(event)===this){this.open()}},/**
+         * Compute the label for the dropdown given a selected item.
+         *
+         * @param {Element} selectedItem A selected Element item, with an
+         * optional `label` property.
+         */_selectedItemChanged:function _selectedItemChanged(selectedItem){var value="";if(!selectedItem){value=""}else{value=selectedItem.label||selectedItem.getAttribute("label")||selectedItem.textContent.trim()}this.value=value;this._setSelectedItemLabel(value)},/**
+         * Compute the vertical offset of the menu based on the value of
+         * `noLabelFloat`.
+         *
+         * @param {boolean} noLabelFloat True if the label should not float
+         * @param {number=} opt_verticalOffset Optional offset from the user
+         * above the input, otherwise false.
+         */_computeMenuVerticalOffset:function _computeMenuVerticalOffset(noLabelFloat,opt_verticalOffset){// Override offset if it's passed from the user.
+if(opt_verticalOffset){return opt_verticalOffset}// NOTE(cdata): These numbers are somewhat magical because they are
+// derived from the metrics of elements internal to `paper-input`'s
+// template. The metrics will change depending on whether or not the
+// input has a floating label.
+return noLabelFloat?-4:8},/**
+         * Returns false if the element is required and does not have a selection,
+         * and true otherwise.
+         * @param {*=} _value Ignored.
+         * @return {boolean} true if `required` is false, or if `required` is true
+         * and the element has a valid selection.
+         */_getValidity:function _getValidity(_value){return this.disabled||!this.required||this.required&&!!this.value},_openedChanged:function _openedChanged(){var openState=this.opened?"true":"false",e=this.contentElement;if(e){e.setAttribute("aria-expanded",openState)}}})})();</script></dom-module></body></html>

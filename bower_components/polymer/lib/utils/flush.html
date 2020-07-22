@@ -1,0 +1,8 @@
+<html><head><link rel="import" href="boot.html"><link rel="import" href="debounce.html"><script>(function(){'use strict';/**
+   * Forces several classes of asynchronously queued tasks to flush:
+   * - Debouncers added via `enqueueDebouncer`
+   * - ShadyDOM distribution
+   *
+   * @memberof Polymer
+   * @return {void}
+   */Polymer.flush=function(){var shadyDOM,debouncers;do{shadyDOM=window.ShadyDOM&&ShadyDOM.flush();if(window.ShadyCSS&&window.ShadyCSS.ScopingShim){window.ShadyCSS.ScopingShim.flush()}debouncers=Polymer.flushDebouncers()}while(shadyDOM||debouncers)}})();</script></head><body></body></html>
