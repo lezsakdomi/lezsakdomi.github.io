@@ -17,6 +17,7 @@
     "iron-icon": "PolymerElements/iron-icon#^2.1.0",
     "paper-card": "PolymerElements/paper-card#^2.1.0",
     "paper-spinner": "PolymerElements/paper-spinner#^2.1.0",
-    "iron-icons": "PolymerElements/iron-icons#^2.1.0"
+    "iron-icons": "PolymerElements/iron-icons#^2.1.0",
+    "range-datepicker": "#0.0.15"
   }
 }
