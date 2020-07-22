@@ -69,7 +69,7 @@
                                         <dom-bind item="[[item]]">
                                             <template>
                                                 <iron-ajax auto last-response="{{response}}"
-                                                           url="//crossorigin.me/[[item]]"
+                                                           url="//cors-anywhere.herokuapp.com/[[item]]"
                                                            handle-as="blob"></iron-ajax>
                                                 <template is="dom-if" if="[[response]]">
                                                     <a href$="[[item]]">
